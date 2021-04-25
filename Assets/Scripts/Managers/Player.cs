@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
+
     private void Start()
     {
-        Managers managers = Managers.Instance;
+        Managers managers = Managers.Instance; //프로퍼티로 호출
     }
 
-    // Update is called once per frame
     private void Update()
     {
     }

@@ -2,23 +2,23 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
-    static Managers s_instance; //유일성 보장
-    public static Managers Instance { // 유일한 매니저를 갖고온다
+    static Managers s_instance; //유일성 보장,싱글톤 사용
+    public static Managers Instance
+    { // 유일한 매니저를 갖고온다, 프로퍼티 사용
         get
         {
             init();
             return s_instance;
         }
     }
-  
+
     // Start is called before the first frame update
     void Start()
     //아무리 각각의 Managers Instance가 Start()호출해도 실제로 전역에 저장되는 것은 managers 원본만 인식함
     {
         init();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
 
