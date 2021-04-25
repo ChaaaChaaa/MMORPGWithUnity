@@ -21,6 +21,15 @@ public class Managers : MonoBehaviour
         }
     }
 
+    ResourceManager resourceManager = new ResourceManager();
+    public static ResourceManager Resource
+    {
+        get
+        {
+            return Instance.resourceManager;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     //아무리 각각의 Managers Instance가 Start()호출해도 실제로 전역에 저장되는 것은 managers 원본만 인식함

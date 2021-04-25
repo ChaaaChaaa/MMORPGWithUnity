@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     void Update() //1frame¥Á »£√‚ 
     {
-        
+
     }
 
     void OnKeyBoard()
