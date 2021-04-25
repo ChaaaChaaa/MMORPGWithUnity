@@ -3,12 +3,21 @@ using UnityEngine;
 public class Managers : MonoBehaviour
 {
     static Managers s_instance; //유일성 보장,싱글톤 사용
-    public static Managers Instance
+    static Managers Instance
     { // 유일한 매니저를 갖고온다, 프로퍼티 사용
         get
         {
             init();
             return s_instance;
+        }
+    }
+
+    InputManager inputManager = new InputManager();
+    public static InputManager Input
+    {
+        get
+        {
+            return Instance.inputManager;
         }
     }
 
@@ -18,10 +27,10 @@ public class Managers : MonoBehaviour
     {
         init();
     }
-    
+
     void Update()
     {
-
+        inputManager.OnUpdate();
     }
 
     /*
