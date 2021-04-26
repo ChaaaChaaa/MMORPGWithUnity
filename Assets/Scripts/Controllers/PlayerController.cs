@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
         Managers.Input.MouseAction += OnMouseClicked;
     }
 
+    float wait_run_ratio = 0;
+
     void Update() //1frame당 호출 
     {
         if (moveToDestination)
@@ -41,6 +43,21 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction),10*Time.deltaTime);
                 transform.LookAt(destinationPosition); //이동할 곳을 바라보면서 달릴 수 있도록 설정
             }
+        }
+
+        if (moveToDestination)
+        {
+            wait_run_ratio = Mathf.Lerp(wait_run_ratio, 1, 10.0f * Time.deltaTime);
+            Animator animator = GetComponent<Animator>();
+            animator.SetFloat("wait_run_ratio", wait_run_ratio); //run
+            animator.Play("WAIT_RUN");
+        }
+        else
+        {
+            wait_run_ratio = Mathf.Lerp(wait_run_ratio, 0, 10.0f * Time.deltaTime);
+            Animator animator = GetComponent<Animator>();
+            animator.SetFloat("wait_run_ratio", wait_run_ratio);
+            animator.Play("WAIT_RUN");
         }
     }
 
@@ -75,15 +92,15 @@ public class PlayerController : MonoBehaviour
 
     void OnMouseClicked(Define.MouseEvent mouseEvent)
     {
-        if(mouseEvent != Define.MouseEvent.Click)
-        {
-            return;
-        }
+        //if(mouseEvent != Define.MouseEvent.Click)
+        //{
+        //    return;
+        //}
 
         Debug.Log("OnMouseClicked");
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(Camera.main.transform.position, ray.direction * 100.0f, Color.red, 1.0f);
+        //Debug.DrawRay(Camera.main.transform.position, ray.direction * 100.0f, Color.red, 1.0f);
 
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("Wall")))
