@@ -22,21 +22,54 @@ public class TestCollision : MonoBehaviour
 
 
     void Start()
-    {        
+    {
     }
- 
+
     void Update()
     {
-        Vector3 look = transform.TransformDirection(Vector3.forward);
-        // Debug.DrawRay(transform.position, Vector3.forward, Color.red);
-        Debug.DrawRay(transform.position + Vector3.up, look * 10, Color.blue);
+        //Local <> World <> Viewport <> Screen (화면)
 
-        RaycastHit hit;
-        //if(Physics.Raycast(transform.position, Vector3.forward))
-        if(Physics.Raycast(transform.position + Vector3.up, look, out hit, 10))
+        //Screen 좌표 : 픽셀 좌표와 유사
+        // Debug.Log(Input.mousePosition);
+
+        //Viewport 좌표 : Screen 좌표와 비슷하지만 픽셀과 상관없이 화면 비율로 몇퍼센트 차지하는지 표현
+        Camera.main.ScreenToViewportPoint(Input.mousePosition);
+
+        //특정 screen 좌표를 알았을때 World좌표를 어떻게 구해야 하는가
+
+        /*
+         *  if (Input.GetMouseButtonDown(0)) //마우스 눌렀을때만 check
         {
-            Debug.Log($"RayCast {hit.collider.gameObject.name}!");
-            //Debug.Log("RayCast ! ");
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
+            Vector3 dir = mousePos - Camera.main.transform.position;
+            dir = dir.normalized;
+
+            Debug.DrawRay(Camera.main.transform.position, dir * 100.0f, Color.red, 1.0f);
+
+            RaycastHit hit;
+            if (Physics.Raycast(Camera.main.transform.position, dir, out hit, 100.0f))
+            {
+                Debug.Log($"Raycast Camera @ {hit.collider.gameObject.name}");
+            }
         }
+         */
+
+
+          
+
+        if (Input.GetMouseButtonDown(0)) //마우스 눌렀을때만 check
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(Camera.main.transform.position, ray.direction * 100.0f, Color.red, 1.0f);
+
+            int mask = (1 << 8); //8번 layout에 위치한것만 raycasting에 걸리도록 함
+
+            RaycastHit hit;
+            if(Physics.Raycast(ray,out hit, 100.0f, mask))
+            {
+                Debug.Log($"Raycast Camera @ {hit.collider.gameObject.name}");
+            }
+        }
+
     }
 }
